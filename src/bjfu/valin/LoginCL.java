@@ -1,5 +1,9 @@
 package bjfu.valin;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -42,6 +46,11 @@ public class LoginCL extends HttpServlet {
 		//Statement stmt=null;
 		//ResultSet rs=null;
 		
+		FileReader fr=null;
+		BufferedReader br=null;
+		FileWriter fw=null;
+		BufferedWriter bw=null;
+		
 		try{
 			//接收用户名和密码
 			String u=request.getParameter("username");
@@ -61,6 +70,7 @@ public class LoginCL extends HttpServlet {
 			
 			//调用UserBeanCL，创建一个对象
 			UserBeanCL ubc=new UserBeanCL();
+			
 			
 			
 			//使用UserBeanCL的一个方法
@@ -101,6 +111,26 @@ public class LoginCL extends HttpServlet {
 					//向session写入属性
 					hs.setAttribute("pass", "OK");
 					
+					//添加网页访问次数
+					fr=new FileReader("d:\\myCounter.txt");
+					br=new BufferedReader(fr);
+					
+					//读出一行数据
+					String numVal=br.readLine();
+					
+					br.close();
+					//将String转为int
+					int times=Integer.parseInt(numVal);
+					
+					//增加一次
+					times++;
+					
+
+					fw=new FileWriter("d:\\myCounter.txt");
+					bw=new BufferedWriter(fw);
+					
+					bw.write(times+"");
+					bw.close();
 					
 					//跳转到welcome，使用sendRedirct方法通过uname变量向welcome页面传送用户名
 					
@@ -152,7 +182,15 @@ public class LoginCL extends HttpServlet {
 		catch(Exception ex){
 			ex.printStackTrace();
 		}
-		
+		finally{
+			if(br!=null){
+				br.close();
+			}
+			if(bw!=null){
+				bw.close();
+			}
+			
+		}
 		/*******
 		finally{
 			//关闭数据库的资源

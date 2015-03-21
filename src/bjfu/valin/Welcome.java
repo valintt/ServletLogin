@@ -54,10 +54,11 @@ public class Welcome extends HttpServlet {
 		HttpSession hs=request.getSession(true);
 		String val=(String)hs.getAttribute("pass");
 		
+		
+		
 		FileReader fr=null;
 		BufferedReader br=null;
-		FileWriter fw=null;
-		BufferedWriter bw=null;
+		String numVal=null;
 		
 		try{	
 			if(val==null){
@@ -100,34 +101,20 @@ public class Welcome extends HttpServlet {
 				
 			}
 			
-			
 			//添加网页访问次数
 			fr=new FileReader("d:\\myCounter.txt");
 			br=new BufferedReader(fr);
 			
 			//读出一行数据
-			String numVal=br.readLine();
+			numVal=br.readLine();
 			
-			//将String转为int
-			int times=Integer.parseInt(numVal);
-			
-			//增加一次
-			times++;
-			
-			fw=new FileWriter("d:\\myCounter.txt");
-			bw=new BufferedWriter(fw);
-			
-			bw.write(times);
-			
+			br.close();
 			
 		}
 		catch(Exception ex){
 			ex.printStackTrace();
 		}
-		finally{
-			br.close();
-			bw.close();
-		}
+		
 		
 		//得到从loginCL传递的用户名
 		//得到loginCL传递的密码
@@ -269,6 +256,9 @@ public class Welcome extends HttpServlet {
 			if(pageNow!=pageCount){
 				pw.println("<a href=welcome?pageNowLink="+(pageNow+1)+">下一页</a>");
 			}
+			
+			//该网页被访问的次数
+			pw.println("<br/>访问次数："+numVal);
 			
 			pw.println("</center></body>");
 			pw.println("</html>");
