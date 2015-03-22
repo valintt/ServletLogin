@@ -12,13 +12,13 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class Login
  */
-@WebServlet("/login")
-public class Login extends HttpServlet {
+@WebServlet("/main")
+public class Main extends HttpServlet {
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Login() {
+    public Main() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -40,16 +40,12 @@ public class Login extends HttpServlet {
 			
 			pw.println("<img src=imgs/welcome.gif><hr/><center>");
 			
-			pw.println("<h1>登录界面</h1>");
-			//action提交给数据处理的url
-			pw.println("<form action=loginCL method=post>");
-			pw.println("用户名<input type=text name=username><br/>");
-			pw.println("密&nbsp;&nbsp;码<input type=password name=password><br/>");
-			//保留cookie的信息选项
-			pw.println("<input type=checkbox name=keep value=2>两周内不再重新登录<br/>");
+			pw.println("<h1>主界面</h1>");
+			pw.println("<a href=welcome>管理用户</a><br/>");
+			pw.println("<a href=???>添加用户</a><br/>");
+			pw.println("<a href=???>查找用户</a><br/>");
+			pw.println("<a href=???>安全退出</a><br/>");
 			
-			pw.println("<input type=submit value=登&nbsp;录><br/>");
-			pw.println("</form>");
 			pw.println("</center><hr/><img src=imgs/pikaqiugif1.gif>");
 			
 			pw.println("</body>");

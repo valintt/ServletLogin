@@ -17,11 +17,11 @@ public class UserBean{
 	}
 	
 	public int getUserID(){
-		return (this.userID);
+		return userID;
 	}
 	
 	public String getUserName() {
-		return (this.userName);
+		return userName;
 	}
 
 	public void setUserName(String userName) {
@@ -29,7 +29,7 @@ public class UserBean{
 	}
 
 	public String getPassword() {
-		return (this.password);
+		return password;
 	}
 
 	public void setPassword(String password) {
@@ -37,7 +37,7 @@ public class UserBean{
 	}
 
 	public String getMail() {
-		return (this.mail);
+		return mail;
 	}
 
 	public void setMail(String mail) {
@@ -45,7 +45,7 @@ public class UserBean{
 	}
 
 	public int getGrade() {
-		return (this.grade);
+		return grade;
 	}
 
 	public void setGrade(int grade) {

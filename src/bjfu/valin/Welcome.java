@@ -52,13 +52,11 @@ public class Welcome extends HttpServlet {
 		String name="";
 		String passwd="";
 		HttpSession hs=request.getSession(true);
+		
+		String nyName=(String)hs.getAttribute("username");
+		
 		String val=(String)hs.getAttribute("pass");
 		
-		
-		
-		FileReader fr=null;
-		BufferedReader br=null;
-		String numVal=null;
 		
 		try{	
 			if(val==null){
@@ -101,14 +99,7 @@ public class Welcome extends HttpServlet {
 				
 			}
 			
-			//添加网页访问次数
-			fr=new FileReader("d:\\myCounter.txt");
-			br=new BufferedReader(fr);
 			
-			//读出一行数据
-			numVal=br.readLine();
-			
-			br.close();
 			
 		}
 		catch(Exception ex){
@@ -156,7 +147,7 @@ public class Welcome extends HttpServlet {
 		
 		//调用userBean处理
 		UserBeanCL ubc=new UserBeanCL();
-		ArrayList<UserBean> al=ubc.getResultByPage(pageNow, pageSize);
+		ArrayList al=ubc.getResultByPage(pageNow, pageSize);
 		
 		//首先得到rowCount
 		//链接数据库，后面需要在finally中关闭资源，否则浪费数据库资源
@@ -208,13 +199,18 @@ public class Welcome extends HttpServlet {
 			
 			
 			
-			//PrintWriter pw=response.getWriter();
+			//PrintWriter pw=response.getWriter();														
 			pw.println("<html>");
-			pw.println("<body><center>");
-			//在Servlet中显示图片,控制大小宽度高度
-			pw.println("<img src=imgs/welcome.gif><br/>");
+			pw.println("<body bgcolor=#00C12B>");
 			
-			pw.println(u+",Welcome! your password is "+p);
+			pw.println("<img src=imgs/welcome.gif>");
+			
+			pw.println("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;欢迎您："+nyName+"<img src=imgs/s.png><hr/><center>");
+			
+			
+			pw.println("<h1>管理用户</h1>");
+			
+			//pw.println(u+",Welcome! your password is "+p);
 			//超链接
 			pw.println("<br/><a href=login>退出</a><br/>");
 		
@@ -222,19 +218,28 @@ public class Welcome extends HttpServlet {
 			
 			//表头
 			pw.println("<table border=1>");
-			pw.println("<tr><th>id</th><th>name</th><th>password</th><th>mail</th><th>grade</th></tr>");
+			pw.println("<tr bgcolor=#007D1C><th>id</th><th>name</th><th>password</th><th>mail</th><th>grade</th><th>修改用户</th><th>删除用户</th></tr>");
 			
+			
+			//定义一个颜色数组
+			String [] myColor={"#FFE240","#7147D7"};
 			
 			for(int i=0;i<al.size();i++){
 				//显示表格
 				
-				UserBean ub=(UserBean)al.get(1);
-				pw.println("<tr>");
+				UserBean ub=(UserBean)al.get(i);
+				pw.println("<tr bgcolor="+myColor[i%2]+">");
 				pw.println("<td>"+ub.getUserID()+"</td>");
 				pw.println("<td>"+ub.getUserName()+"</td>");
 				pw.println("<td>"+ub.getPassword()+"</td>");
 				pw.println("<td>"+ub.getMail()+"</td>");
 				pw.println("<td>"+ub.getGrade()+"</td>");
+				
+				
+				pw.println("<td><a href=update?idusers="+ub.getUserID()+"&usersname="+ub.getUserName()+"&password="+ub.getPassword()+"&mail="+ub.getMail()+"&grade="+ub.getGrade()+">修改用户</a></td>");
+				
+				//onclick=\"return window.confirm('您确认要删除用户吗？')\" 确认窗口
+				pw.println("<td><a href=deleteUserCL?idusers="+ub.getUserID()+" onclick=\"return window.confirm('您确认要删除用户吗？')\">删除用户</a></td>");
 				pw.println("</tr>");
 			}
 			
@@ -257,10 +262,22 @@ public class Welcome extends HttpServlet {
 				pw.println("<a href=welcome?pageNowLink="+(pageNow+1)+">下一页</a>");
 			}
 			
-			//该网页被访问的次数
-			pw.println("<br/>访问次数："+numVal);
+			//制定跳转到某一页
+			//这里实际是一个表单
+			pw.println("<form action=welcome>");
+			pw.println("跳转到<input type=text name=pageNowLink>页");
+			pw.println("<input type=submit value=go>");
+			pw.println("</form>");
 			
-			pw.println("</center></body>");
+			
+			//该网页被访问的次数
+			pw.println("<br/>访问次数："+this.getServletContext().getAttribute("visitTimes").toString());
+			
+			//pw.println("<br/>你的ip="+request.getRemoteAddr()+"<br/>");
+			//pw.println("你的主机名="+request.getRemoteHost()+"<br/>");
+			pw.println("</center><hr/><img src=imgs/pikaqiugif1.gif>");
+			
+			pw.println("</body>");
 			pw.println("</html>");
 			
 	//	} catch (Exception ex) {

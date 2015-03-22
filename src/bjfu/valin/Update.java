@@ -1,3 +1,5 @@
+//修改用户信息的界面
+
 package bjfu.valin;
 
 import java.io.IOException;
@@ -12,13 +14,13 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class Login
  */
-@WebServlet("/login")
-public class Login extends HttpServlet {
+@WebServlet("/update")
+public class Update extends HttpServlet {
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Login() {
+    public Update() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -32,6 +34,14 @@ public class Login extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		try{
+			
+			String id=request.getParameter("idusers");
+			String name=request.getParameter("usersname");
+			String password=request.getParameter("password");
+			String mail=request.getParameter("mail");
+			String grade=request.getParameter("grade");
+			
+			
 			//中文乱码，方法一
 			response.setContentType("text/html;charset=gbk");
 			PrintWriter pw=response.getWriter();
@@ -40,15 +50,22 @@ public class Login extends HttpServlet {
 			
 			pw.println("<img src=imgs/welcome.gif><hr/><center>");
 			
-			pw.println("<h1>登录界面</h1>");
+			pw.println("<h1>修改用户界面</h1>");
 			//action提交给数据处理的url
-			pw.println("<form action=loginCL method=post>");
-			pw.println("用户名<input type=text name=username><br/>");
-			pw.println("密&nbsp;&nbsp;码<input type=password name=password><br/>");
-			//保留cookie的信息选项
-			pw.println("<input type=checkbox name=keep value=2>两周内不再重新登录<br/>");
+			pw.println("<form action=updateCL method=post>");
+			//表头
+			pw.println("<table border=1>");
 			
-			pw.println("<input type=submit value=登&nbsp;录><br/>");
+			pw.println("<tr bgcolor=#65E080><td>id</td><td><input name=newId readonly type=text value="+id+"></td></tr>");
+			pw.println("<tr bgcolor=#65E080><td>name</td><td><input readonly type=text value="+name+"></td></tr>");
+			pw.println("<tr bgcolor=#65E080><td>password</td><td><input name=newPassword type=text value="+password+"></td></tr>");
+			pw.println("<tr bgcolor=#65E080><td>email</td><td><input name=newMail type=text value="+mail+"></td></tr>");
+			pw.println("<tr bgcolor=#65E080><td>grade</td><td><input name=newGrade type=text value="+grade+"></td></tr>");
+			
+			
+			pw.println("</table>");																													
+			
+			pw.println("<input type=submit value=确&nbsp;定><br/>");
 			pw.println("</form>");
 			pw.println("</center><hr/><img src=imgs/pikaqiugif1.gif>");
 			

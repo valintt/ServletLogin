@@ -1,3 +1,5 @@
+//操作成功页面
+
 package bjfu.valin;
 
 import java.io.IOException;
@@ -10,15 +12,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class Login
+ * Servlet implementation class DeleteUserCL
  */
-@WebServlet("/login")
-public class Login extends HttpServlet {
-
+@WebServlet("/ok")
+public class Ok extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Login() {
+    public Ok() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -26,44 +29,38 @@ public class Login extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-  //处理get请求
-    //request获得客户端（浏览器）的信息
-  //response向客户端（浏览器）的返回信息
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		try{
-			//中文乱码，方法一
 			response.setContentType("text/html;charset=gbk");
+			
 			PrintWriter pw=response.getWriter();
+			
 			pw.println("<html>");
 			pw.println("<body bgcolor=#00C12B>");
 			
 			pw.println("<img src=imgs/welcome.gif><hr/><center>");
 			
-			pw.println("<h1>登录界面</h1>");
-			//action提交给数据处理的url
-			pw.println("<form action=loginCL method=post>");
-			pw.println("用户名<input type=text name=username><br/>");
-			pw.println("密&nbsp;&nbsp;码<input type=password name=password><br/>");
-			//保留cookie的信息选项
-			pw.println("<input type=checkbox name=keep value=2>两周内不再重新登录<br/>");
+			pw.println("<h1>操作成功</h1>");
+			pw.println("<a href=main>返回主页面</a>");
+			pw.println("<a href=welcome>继续操作</a>");
 			
-			pw.println("<input type=submit value=登&nbsp;录><br/>");
-			pw.println("</form>");
 			pw.println("</center><hr/><img src=imgs/pikaqiugif1.gif>");
 			
 			pw.println("</body>");
 			pw.println("</html>");
+			
 		}
 		catch(Exception ex){
 			ex.printStackTrace();
 		}
+		
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		this.doGet(request, response);
 	}

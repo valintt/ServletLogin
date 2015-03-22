@@ -31,7 +31,88 @@ public class LoginCL extends HttpServlet {
         super();
         // TODO Auto-generated constructor stub
     }
+    
+    //重写init函数
+    public void init() {
+    	FileReader fr=null;
+		BufferedReader br=null;
+		
+		try{
+			//只会被调用一次
+			//初始化计数器，文件读取
+			
+			//添加网页访问次数
+			fr=new FileReader("d:\\myCounter.txt");
+			br=new BufferedReader(fr);
+			
+			//读出一行数据
+			String numVal=br.readLine();
+			
+			br.close();
+			
+			
+			
+			
+			//将times的值放入ServletContext中
+			this.getServletContext().setAttribute("visitTimes", numVal);
+			
+			System.out.println("执行init函数");
+		}
+		catch(Exception ex){
+			ex.printStackTrace();
+		}
+		finally{
+			if(br!=null){
+				try {
+					br.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+		}
+	}   
+    
+    //重写destroy函数
+    public void destroy() {
+    	FileWriter fw=null;
+		BufferedWriter bw=null;
+		
+		try{																								
+			//关闭服务器时，被调用
+			//将计数器的值写入文件中
+			//将String转为int
+			
+			
+			
+			
 
+			fw=new FileWriter("d:\\myCounter.txt");
+			bw=new BufferedWriter(fw);
+			
+			bw.write(this.getServletContext().getAttribute("visitTimes").toString());
+			bw.close();
+			
+			System.out.println("destroy函数被调用");
+		}
+		catch(Exception ex){
+			ex.printStackTrace();
+		}
+		finally{
+			if(bw!=null){
+				try {
+					bw.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+		}
+	}
+    
+    
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -46,10 +127,8 @@ public class LoginCL extends HttpServlet {
 		//Statement stmt=null;
 		//ResultSet rs=null;
 		
-		FileReader fr=null;
-		BufferedReader br=null;
-		FileWriter fw=null;
-		BufferedWriter bw=null;
+		
+		
 		
 		try{
 			//接收用户名和密码
@@ -111,30 +190,14 @@ public class LoginCL extends HttpServlet {
 					//向session写入属性
 					hs.setAttribute("pass", "OK");
 					
-					//添加网页访问次数
-					fr=new FileReader("d:\\myCounter.txt");
-					br=new BufferedReader(fr);
-					
-					//读出一行数据
-					String numVal=br.readLine();
-					
-					br.close();
-					//将String转为int
-					int times=Integer.parseInt(numVal);
-					
-					//增加一次
-					times++;
-					
-
-					fw=new FileWriter("d:\\myCounter.txt");
-					bw=new BufferedWriter(fw);
-					
-					bw.write(times+"");
-					bw.close();
+					//将ServletContext的visitTimes所对应的值++
+					String times=this.getServletContext().getAttribute("visitTimes").toString();
+					//对times的值++，再重新放回ServletContext
+					this.getServletContext().setAttribute("visitTimes", (Integer.parseInt(times)+1)+"");
 					
 					//跳转到welcome，使用sendRedirct方法通过uname变量向welcome页面传送用户名
 					
-					response.sendRedirect("welcome?uname="+u+"&upass="+p);
+					response.sendRedirect("main");
 				
 				}
 				else{
@@ -182,15 +245,7 @@ public class LoginCL extends HttpServlet {
 		catch(Exception ex){
 			ex.printStackTrace();
 		}
-		finally{
-			if(br!=null){
-				br.close();
-			}
-			if(bw!=null){
-				bw.close();
-			}
-			
-		}
+		
 		/*******
 		finally{
 			//关闭数据库的资源

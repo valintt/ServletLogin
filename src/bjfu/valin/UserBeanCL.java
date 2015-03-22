@@ -15,9 +15,9 @@ public class UserBeanCL{
 	private int pageCount=0;//共有几页（计算
 	
 	//分页显示结果，得到数据库中的记录，并封装到ArrayList中，返回给LoginCL
-	public ArrayList<UserBean> getResultByPage(int pageNow, int pageSize){
+	public ArrayList getResultByPage(int pageNow, int pageSize){
 		
-		ArrayList<UserBean> al=new ArrayList<UserBean>();
+		ArrayList al=new ArrayList();
 		
 		int rowCount=0;//共有几条记录，查表
 		
@@ -141,5 +141,70 @@ public class UserBeanCL{
 		catch(Exception ex){
 			ex.printStackTrace();
 		}
+	}
+	
+	//删除用户
+	public boolean delete(String id) {
+		
+		Boolean b=false;
+		
+		try{
+			
+			//得到连接
+			ConnDB cd=new ConnDB();
+			conn=cd.getConn();
+			
+			ps=conn.prepareStatement("delete from users where idusers='"+id+"';");
+			
+			//执行删除用户懂得操作
+			int num=ps.executeUpdate();
+			
+			//num==1表示删除成功返回true,else删除失败返回false
+			if(num==1){
+				b=true;
+			}
+			
+		}
+		catch(Exception ex){
+			ex.printStackTrace();
+		}
+		finally{
+			this.close();
+		}
+		
+		return b;
+	}
+	
+	
+	//修改用户
+	public boolean update(String id,String password,String mail,String grade) {
+		
+		Boolean b=false;
+		
+		try{
+			
+			//得到连接
+			ConnDB cd=new ConnDB();
+			conn=cd.getConn();
+			
+			ps=conn.prepareStatement("update users set password='"+password+"',mail='"+mail+"',grade='"+grade+"' where idusers='"+id+"';");
+			
+			//执行删修改用户操作
+			int num=ps.executeUpdate();
+			
+			//num==1表示删除成功返回true,else删除失败返回false
+			if(num==1){
+				b=true;
+			}
+			
+		}
+		catch(Exception ex){
+			ex.printStackTrace();
+		}
+		finally{
+			this.close();
+		}
+		
+		return b;
 	}
 }
